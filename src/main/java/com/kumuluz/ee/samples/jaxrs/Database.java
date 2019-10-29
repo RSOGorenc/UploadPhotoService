@@ -20,31 +20,27 @@
 */
 package com.kumuluz.ee.samples.jaxrs;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Benjamin Kastelic
- * @since 2.3.0
- */
 public class Database {
-    private static List<Customer> customers = new ArrayList<>();
+    private static List<ImageEntry> images = new ArrayList<>();
 
-    public static List<Customer> getCustomers() {
-        return customers;
+    public static List<ImageEntry> getCustomers() {
+        return images;
     }
 
-    public static Customer getCustomer(String customerId) {
-        for (Customer customer : customers) {
-            if (customer.getId().equals(customerId))
-                return customer;
+    public static ImageEntry getCustomer(String imageId) {
+        for (ImageEntry image : images) {
+            if (image.getId().equals(imageId))
+                return image;
         }
-
         return null;
     }
 
-    public static void addCustomer(Customer customer) {
-        customers.add(customer);
+    public static void addCustomer(ImageEntry customer) {
+        images.add(customer);
     }
 
     public static void deleteCustomer(String customerId) {
