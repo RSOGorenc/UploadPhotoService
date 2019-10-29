@@ -27,26 +27,26 @@ import java.util.List;
 public class Database {
     private static List<ImageEntry> images = new ArrayList<>();
 
-    public static List<ImageEntry> getCustomers() {
+    public static List<ImageEntry> getImages() {
         return images;
     }
 
-    public static ImageEntry getCustomer(String imageId) {
+    public static ImageEntry getImage(String imageId) {
         for (ImageEntry image : images) {
-            if (image.getId().equals(imageId))
+            if (image.getImageId().equals(imageId))
                 return image;
         }
         return null;
     }
 
-    public static void addCustomer(ImageEntry customer) {
-        images.add(customer);
+    public static void addImage(ImageEntry image) {
+        images.add(image);
     }
 
-    public static void deleteCustomer(String customerId) {
-        for (Customer customer : customers) {
-            if (customer.getId().equals(customerId)) {
-                customers.remove(customer);
+    public static void deleteImage(String imageId) {
+        for (ImageEntry image : images) {
+            if (image.getImageId().equals(imageId)) {
+                images.remove(image);
                 break;
             }
         }

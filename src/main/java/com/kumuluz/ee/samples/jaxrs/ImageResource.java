@@ -31,34 +31,34 @@ import java.util.List;
  */
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Path("customers")
-public class CustomerResource {
+@Path("images")
+public class ImageResource {
 
     @GET
     public Response getAllCustomers() {
-        List<Customer> customers = Database.getCustomers();
-        return Response.ok(customers).build();
+        List<ImageEntry> images = Database.getImages();
+        return Response.ok(images).build();
     }
 
     @GET
-    @Path("{customerId}")
-    public Response getCustomer(@PathParam("customerId") String customerId) {
-        Customer customer = Database.getCustomer(customerId);
-        return customer != null
-                ? Response.ok(customer).build()
+    @Path("{imageId}")
+    public Response getCustomer(@PathParam("imageId") String imageId) {
+        ImageEntry image = Database.getImage(imageId);
+        return image != null
+                ? Response.ok(image).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
-    public Response addNewCustomer(Customer customer) {
-        Database.addCustomer(customer);
-        return Response.noContent().build();
+    public Response addNewCustomer(ImageEntry image) {
+        Database.addImage(image);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @DELETE
-    @Path("{customerId}")
-    public Response deleteCustomer(@PathParam("customerId") String customerId) {
-        Database.deleteCustomer(customerId);
+    @Path("{imageId}")
+    public Response deleteCustomer(@PathParam("imageId") String imageId) {
+        Database.deleteImage(imageId);
         return Response.noContent().build();
     }
 }
