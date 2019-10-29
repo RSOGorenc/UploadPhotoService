@@ -11,7 +11,7 @@ public class ImageEntry {
     private String userId;
     @JsonbDateFormat("dd.MM.yyyy")
     private LocalDate date;
-    
+
     @JsonbCreator
     public ImageEntry(@JsonbProperty("image")String image,
                       @JsonbProperty("imageId")String imageId,
