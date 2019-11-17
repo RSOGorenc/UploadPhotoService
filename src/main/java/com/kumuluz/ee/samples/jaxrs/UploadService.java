@@ -23,10 +23,6 @@ package com.kumuluz.ee.samples.jaxrs;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-/**
- * @author Benjamin Kastelic
- * @since 2.3.0
- */
-@ApplicationPath("upload")
+@ApplicationPath("v1")
 public class UploadService extends Application {
 }

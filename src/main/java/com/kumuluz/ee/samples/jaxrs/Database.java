@@ -1,54 +1,28 @@
-/*
- *  Copyright (c) 2014-2017 Kumuluz and/or its affiliates
- *  and other contributors as indicated by the @author tags and
- *  the contributor list.
- *
- *  Licensed under the MIT License (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *  https://opensource.org/licenses/MIT
- *
- *  The software is provided "AS IS", WITHOUT WARRANTY OF ANY KIND, express or
- *  implied, including but not limited to the warranties of merchantability,
- *  fitness for a particular purpose and noninfringement. in no event shall the
- *  authors or copyright holders be liable for any claim, damages or other
- *  liability, whether in an action of contract, tort or otherwise, arising from,
- *  out of or in connection with the software or the use or other dealings in the
- *  software. See the License for the specific language governing permissions and
- *  limitations under the License.
-*/
 package com.kumuluz.ee.samples.jaxrs;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+import javax.json.bind.JsonbBuilder;
 
-public class Database {
-    private static List<ImageEntry> images = new ArrayList<>();
+class Database {
+    private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.99.100:27017"));
+    private static MongoDatabase database = mongoClient.getDatabase("imagePlatform");
+    private static MongoCollection collection = database.getCollection("images");
 
-    public static List<ImageEntry> getImages() {
-        return images;
-    }
-
-    public static ImageEntry getImage(String imageId) {
-        for (ImageEntry image : images) {
-            if (image.getImageId().equals(imageId))
-                return image;
+    @SuppressWarnings("unchecked")
+    static boolean AddImage(ImageEntry image){
+        try {
+            String json = JsonbBuilder.create().toJson(image);
+            BasicDBObject dbObject = BasicDBObject.parse(json);
+            collection.insertOne(new org.bson.Document(dbObject.toMap()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
-        return null;
+        return true;
     }
 
-    public static void addImage(ImageEntry image) {
-        images.add(image);
-    }
-
-    public static void deleteImage(String imageId) {
-        for (ImageEntry image : images) {
-            if (image.getImageId().equals(imageId)) {
-                images.remove(image);
-                break;
-            }
-        }
-    }
 }
