@@ -17,6 +17,7 @@ public class ImageResource {
         // Add code for sending to a validation and processing micro-service
         // Add code for dropping off to S3 bucket
         // Use the s3 link in place of the dummy link
+        AwsStorage.ListBuckets();
         ImageEntry response = new ImageEntry(dummyLink, image.getUserId(), LocalDate.now());
         if(Database.AddImage(response)){
             return Response.status(Response.Status.CREATED).build();
