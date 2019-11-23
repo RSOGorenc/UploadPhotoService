@@ -1,4 +1,4 @@
-package com.kumuluz.ee.samples.jaxrs;
+package com.amproductions.uploadmicroserivce;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

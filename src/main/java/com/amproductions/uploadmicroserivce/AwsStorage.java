@@ -1,4 +1,5 @@
-package com.kumuluz.ee.samples.jaxrs;
+package com.amproductions.uploadmicroserivce;
+
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -63,25 +64,21 @@ public class AwsStorage {
         }
     }
 
-    public static String UploadImage(String base64String){
-        try {
-            byte[] decoded = Base64.getDecoder().decode(base64String);
-            InputStream fileStream = new ByteArrayInputStream(decoded);
-            String mime = URLConnection.guessContentTypeFromStream(fileStream);
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(mime);
-            metadata.setContentLength(decoded.length);
-            CreateBucket(bucketName.toLowerCase());
-            String objectName = Long.toString(System.currentTimeMillis());
-            PutObjectRequest request = new PutObjectRequest(bucketName, objectName, fileStream, metadata);
-            request.setCannedAcl(CannedAccessControlList.PublicRead);
-            s3.putObject(request);
-            return s3.getUrl(bucketName, objectName).toExternalForm();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return "decoding failed";
-        }
+    public static String UploadImage(String base64String) throws Exception{
+        byte[] decoded = Base64.getDecoder().decode(base64String);
+        byte[] processed = ImageTool.processImage(decoded);
+        if (processed == null) throw new IllegalArgumentException("file stream is not image");
+        InputStream imageStream = new ByteArrayInputStream(processed);
+        String mime = URLConnection.guessContentTypeFromStream(imageStream);
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(mime);
+        metadata.setContentLength(processed.length);
+        CreateBucket(bucketName.toLowerCase());
+        String objectName = Long.toString(System.currentTimeMillis());
+        PutObjectRequest request = new PutObjectRequest(bucketName, objectName, imageStream, metadata);
+        request.setCannedAcl(CannedAccessControlList.PublicRead);
+        s3.putObject(request);
+        return s3.getUrl(bucketName, objectName).toExternalForm();
     }
 
 }

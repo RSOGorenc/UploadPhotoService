@@ -1,4 +1,4 @@
-package com.kumuluz.ee.samples.jaxrs;
+package com.amproductions.uploadmicroserivce;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.json.bind.annotation.JsonbProperty;
