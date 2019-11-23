@@ -14,7 +14,7 @@ public class ImageRequest {
         this.userId = userId;
     }
 
-    public String getImageLink(){
+    public String getImage(){
         return image;
     }
     public String getUserId(){

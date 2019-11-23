@@ -13,12 +13,12 @@ public class ImageResource {
     private static String dummyLink = "https://i.imgur.com/HXLuZf5.jpg";
 
     @POST
-    public Response addNewCustomer(ImageRequest image) {
+    public Response uploadImage(ImageRequest image) {
         // Add code for sending to a validation and processing micro-service
         // Add code for dropping off to S3 bucket
         // Use the s3 link in place of the dummy link
-        AwsStorage.ListBuckets();
-        ImageEntry response = new ImageEntry(dummyLink, image.getUserId(), LocalDate.now());
+        String imageUrl = AwsStorage.UploadImage(image.getImage());
+        ImageEntry response = new ImageEntry(imageUrl, image.getUserId(), LocalDate.now());
         if(Database.AddImage(response)){
             return Response.status(Response.Status.CREATED).build();
         }
@@ -27,7 +27,7 @@ public class ImageResource {
 
     @DELETE
     @Path("{imageId}")
-    public Response deleteCustomer(@PathParam("imageId") String imageId) {
+    public Response deleteImage(@PathParam("imageId") String imageId) {
         // Database.deleteImage(imageId);
         return Response.noContent().build();
     }
