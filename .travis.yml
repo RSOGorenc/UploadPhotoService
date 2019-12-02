@@ -1,0 +1,13 @@
+sudo: required
+
+language: java
+
+services:
+  - docker
+
+script:
+  - docker build -t --build-arg AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" --build-arg AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" upload-microservice .
+after_success:
+  - docker tag upload-microservice "$DOCKER_HUB_USERNAME"/upload-microservice:latest
+  - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
+  - docker push "$DOCKER_HUB_USERNAME"/upload-microservice:latest
