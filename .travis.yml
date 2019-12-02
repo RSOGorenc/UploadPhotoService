@@ -6,7 +6,7 @@ services:
   - docker
 
 script:
-  - docker build -t upload-microservice --build-arg AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" --build-arg AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" upload-microservice .
+  - docker build -t upload-microservice --build-arg AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" --build-arg AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" .
 after_success:
   - docker tag upload-microservice "$DOCKER_HUB_USERNAME"/upload-microservice:latest
   - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD"
