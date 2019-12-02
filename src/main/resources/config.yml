@@ -1,0 +1,7 @@
+kumuluzee:
+  name: upload-service
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
