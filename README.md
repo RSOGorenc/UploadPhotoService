@@ -12,7 +12,9 @@ Testiranje:
 
 Preko naslova http://104.199.9.130/v1/upload poslji post request s sledecim Json objektom:
 
+~~~
 {
     "imageBase64":"<base64 zakodirana slika>"
     "userId":"<id_uporabnika>"
 }
+~~~
