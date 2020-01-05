@@ -1,5 +1,6 @@
 package com.amproductions.uploadmicroserivce;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -8,6 +9,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
 import java.util.Collections;
@@ -78,7 +81,15 @@ public class AwsStorage {
         PutObjectRequest request = new PutObjectRequest(bucketName, objectName, imageStream, metadata);
         request.setCannedAcl(CannedAccessControlList.PublicRead);
         s3.putObject(request);
-        return s3.getUrl(bucketName, objectName).toExternalForm();
+        return s3.getObject(bucketName, objectName).getKey();
+    }
+
+    public static URI GetUrl(String objectKey) throws Exception{
+        return s3.getUrl(bucketName, objectKey).toURI();
+    }
+
+    public static void DeleteImage(String objectKey) throws Exception {
+        s3.deleteObject(bucketName, objectKey);
     }
 
 }
