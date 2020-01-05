@@ -52,21 +52,6 @@ public class AwsStorage {
         return true;
     }
 
-    private static String UploadFile(String bucketName, String fileId, InputStream input, ObjectMetadata metadata){
-        try {
-            s3.putObject(bucketName, fileId, input, metadata);
-            return s3.getUrl(bucketName, fileId).toExternalForm();
-        }
-        catch (AmazonS3Exception e){
-            e.printStackTrace();
-            return "upload failed";
-        }
-        catch (SdkClientException e){
-            e.printStackTrace();
-            return "upload failed";
-        }
-    }
-
     public static String UploadImage(String base64String) throws Exception{
         byte[] decoded = Base64.getDecoder().decode(base64String);
         byte[] processed = ImageTool.processImage(decoded);

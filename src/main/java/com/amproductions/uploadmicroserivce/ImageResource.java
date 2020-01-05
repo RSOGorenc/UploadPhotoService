@@ -4,7 +4,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -15,11 +14,15 @@ import java.util.List;
 public class ImageResource {
 
     @POST
-    public Response uploadImage(ImageRequest image) {
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response uploadImage(String image, @HeaderParam("userId") String userId) {
+        if(userId == null){
+            userId = "public";
+        }
         try {
-            String imageKey = AwsStorage.UploadImage(image.getImageBase64());
+            String imageKey = AwsStorage.UploadImage(image);
             List<String> emptyListN = Collections.<String>emptyList();
-            ImageEntry response = new ImageEntry(imageKey, image.getUserId(), LocalDate.now(), emptyListN);
+            ImageEntry response = new ImageEntry(imageKey, userId, LocalDate.now(), emptyListN);
             if(Database.AddImage(response)){
                 return Response.status(Response.Status.CREATED).build();
             }
@@ -33,6 +36,9 @@ public class ImageResource {
     @GET
     @Path("{imageId}")
     public Response getImage(@PathParam("imageId") String imageId, @HeaderParam("userId") String userId){
+        if(userId == null){
+            userId = "public";
+        }
         if(!Database.Exists(imageId)){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -51,6 +57,9 @@ public class ImageResource {
     @DELETE
     @Path("{imageId}")
     public Response deleteImage(@PathParam("imageId") String imageId, @HeaderParam("userId") String userId) {
+        if(userId == null){
+            userId = "public";
+        }
         if(!Database.Exists(imageId)){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
