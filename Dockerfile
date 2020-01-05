@@ -16,6 +16,7 @@ RUN mvn -f /home/app/pom.xml clean package
 #
 # Package stage
 #
+
 FROM openjdk:11-jre-slim
 
 ARG AWS_ACCESS_KEY_ID

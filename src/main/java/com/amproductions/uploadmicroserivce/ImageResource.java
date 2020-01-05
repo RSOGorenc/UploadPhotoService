@@ -4,6 +4,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -14,7 +16,8 @@ public class ImageResource {
     public Response uploadImage(ImageRequest image) {
         try {
             String imageUrl = AwsStorage.UploadImage(image.getImageBase64());
-            ImageEntry response = new ImageEntry(imageUrl, image.getUserId(), LocalDate.now());
+            List<String> emptyListN = Collections.<String>emptyList();
+            ImageEntry response = new ImageEntry(imageUrl, image.getUserId(), LocalDate.now(), emptyListN);
             if(Database.AddImage(response)){
                 return Response.status(Response.Status.CREATED).build();
             }

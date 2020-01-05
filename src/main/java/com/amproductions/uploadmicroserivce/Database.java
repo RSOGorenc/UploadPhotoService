@@ -8,7 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import javax.json.bind.JsonbBuilder;
 
 class Database {
-    private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://rso-mongo-service:27017"));
+    private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://192.168.99.100:27017"));
     private static MongoDatabase database = mongoClient.getDatabase("imagePlatform");
     private static MongoCollection collection = database.getCollection("images");
 
