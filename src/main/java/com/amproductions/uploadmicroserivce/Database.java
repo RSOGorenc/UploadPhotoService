@@ -55,5 +55,4 @@ class Database {
         collection.deleteOne(entry);
         return true;
     }
-
 }
