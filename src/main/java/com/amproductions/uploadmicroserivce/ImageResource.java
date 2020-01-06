@@ -12,7 +12,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
-import java.net.http.HttpClient;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Collections;
@@ -31,7 +30,7 @@ public class ImageResource {
             userId = "public";
         }
         try {
-            HttpPost post = new HttpPost("http://127.0.0.1:22341/v1/processing");
+            HttpPost post = new HttpPost("http://processing-service:22341/v1/processing");
             post.setEntity(new StringEntity(image, ContentType.create("text/plain")));
 
             String processedBase64;
