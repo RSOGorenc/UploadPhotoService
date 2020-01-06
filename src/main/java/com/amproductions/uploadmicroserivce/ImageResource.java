@@ -26,6 +26,7 @@ public class ImageResource {
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     public Response uploadImage(String image, @HeaderParam("userId") String userId) {
+        System.out.println(System.getenv("AWS_ACCESS_KEY_ID"));
         if(userId == null){
             userId = "public";
         }
@@ -39,6 +40,7 @@ public class ImageResource {
                 processedBase64 = EntityUtils.toString(response.getEntity());
             }
             catch (Exception e){
+                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
 
