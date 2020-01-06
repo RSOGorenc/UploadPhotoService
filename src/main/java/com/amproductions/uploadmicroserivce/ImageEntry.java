@@ -11,16 +11,19 @@ public class ImageEntry {
     @JsonbDateFormat("dd.MM.yyyy")
     private LocalDate date;
     private List<String> comments;
+    private List<String> shareUsers;
 
     @JsonbCreator
     public ImageEntry(@JsonbProperty("image")String imageId,
                       @JsonbProperty("userId")String userId,
                       @JsonbProperty("date")LocalDate date,
-                      @JsonbProperty("comment")List<String> comments){
+                      @JsonbProperty("comment")List<String> comments,
+                      @JsonbProperty("shareUsers")List<String> shareUsers){
         this.imageId = imageId;
         this.userId = userId;
         this.date = date;
         this.comments = comments;
+        this.shareUsers = shareUsers;
     }
 
     public String getImageId(){
@@ -34,6 +37,9 @@ public class ImageEntry {
     }
     public List<String> getComments(){
         return comments;
+    }
+    public List<String> getShareUsers(){
+        return shareUsers;
     }
 
 }

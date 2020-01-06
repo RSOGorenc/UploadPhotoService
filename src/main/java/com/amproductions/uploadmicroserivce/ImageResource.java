@@ -21,8 +21,10 @@ public class ImageResource {
         }
         try {
             String imageKey = AwsStorage.UploadImage(image);
-            List<String> emptyListN = Collections.<String>emptyList();
-            ImageEntry response = new ImageEntry(imageKey, userId, LocalDate.now(), emptyListN);
+            List<String> emptyListComments = Collections.<String>emptyList();
+            List<String> emptyListShares = Collections.<String>emptyList();
+
+            ImageEntry response = new ImageEntry(imageKey, userId, LocalDate.now(), emptyListComments,emptyListShares);
             if(Database.AddImage(response)){
                 return Response.status(Response.Status.CREATED).build();
             }
