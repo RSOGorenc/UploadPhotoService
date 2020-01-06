@@ -1,10 +1,20 @@
 package com.amproductions.uploadmicroserivce;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +30,20 @@ public class ImageResource {
             userId = "public";
         }
         try {
-            String imageKey = AwsStorage.UploadImage(image);
+            HttpPost post = new HttpPost("http://127.0.0.1:8082/v1/processing");
+            post.setEntity(new StringEntity(image, ContentType.create("text/plain")));
+
+            String processedBase64;
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(post)) {
+                processedBase64 = EntityUtils.toString(response.getEntity());
+            }
+            catch (Exception e){
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+
+            byte[] processed = Base64.getDecoder().decode(processedBase64);
+            String imageKey = AwsStorage.UploadImage(processed);
             List<String> emptyListComments = Collections.<String>emptyList();
             List<String> emptyListShares = Collections.<String>emptyList();
 

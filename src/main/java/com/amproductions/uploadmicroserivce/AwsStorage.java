@@ -52,15 +52,13 @@ public class AwsStorage {
         return true;
     }
 
-    public static String UploadImage(String base64String) throws Exception{
-        byte[] decoded = Base64.getDecoder().decode(base64String);
-        byte[] processed = ImageTool.processImage(decoded);
-        if (processed == null) throw new IllegalArgumentException("file stream is not image");
-        InputStream imageStream = new ByteArrayInputStream(processed);
+    public static String UploadImage(byte[] image) throws Exception{
+        if (image == null) throw new IllegalArgumentException("file stream is not image");
+        InputStream imageStream = new ByteArrayInputStream(image);
         String mime = URLConnection.guessContentTypeFromStream(imageStream);
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(mime);
-        metadata.setContentLength(processed.length);
+        metadata.setContentLength(image.length);
         CreateBucket(bucketName.toLowerCase());
         String objectName = Long.toString(System.currentTimeMillis());
         PutObjectRequest request = new PutObjectRequest(bucketName, objectName, imageStream, metadata);
