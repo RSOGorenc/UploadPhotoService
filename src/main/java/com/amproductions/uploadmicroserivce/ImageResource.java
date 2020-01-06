@@ -30,7 +30,7 @@ public class ImageResource {
             userId = "public";
         }
         try {
-            HttpPost post = new HttpPost("http://127.0.0.1:8082/v1/processing");
+            HttpPost post = new HttpPost("http://127.0.0.1:22341/v1/processing");
             post.setEntity(new StringEntity(image, ContentType.create("text/plain")));
 
             String processedBase64;
