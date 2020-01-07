@@ -5,3 +5,11 @@ kumuluzee:
     base-url: http://localhost:8081
     http:
       port: 8081
+  health:
+    checks:
+      mongo-health-check:
+        connection-url: mongodb://rso-mongo-service:27017/local?serverSelectionTimeoutMS=2000
+      service-health-check:
+        connection-url: http://localhost:8081/v1/status
+      processing-health-check:
+        connection-url: http://processing-service:22341/v1/status
