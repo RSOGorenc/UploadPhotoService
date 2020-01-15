@@ -21,7 +21,7 @@ import java.util.List;
 public class StatusResource {
 
     @GET
-    public Response getImage(){
+    public Response status(){
         return Response.status(Response.Status.OK).build();
     }
 }

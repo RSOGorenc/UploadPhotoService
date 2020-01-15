@@ -65,10 +65,11 @@ public class ImageResource {
         if(userId == null){
             userId = "public";
         }
+        Database.CheckShare(imageId, userId);
         if(!Database.Exists(imageId)){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        if(!Database.CheckOwnership(imageId, userId)){
+        if(!Database.CheckOwnership(imageId, userId) && !Database.CheckShare(imageId, userId)){
             return Response.status(Response.Status.FORBIDDEN).build();
         }
         try{

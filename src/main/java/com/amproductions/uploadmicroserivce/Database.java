@@ -5,15 +5,25 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
-
+import javax.json.JsonObject;
 import javax.json.bind.JsonbBuilder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 class Database {
     private static MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://rso-mongo-service:27017"));
     private static MongoDatabase database = mongoClient.getDatabase("imagePlatform");
     private static MongoCollection collection = database.getCollection("images");
+
+    final static Class<? extends List> docClazz = new ArrayList<String>().getClass();
+
 
     @SuppressWarnings("unchecked")
     static boolean AddImage(ImageEntry image){
@@ -42,6 +52,23 @@ class Database {
             return false;
         }
         return true;
+    }
+
+    static boolean CheckShare(String imageId, String userId){
+        Document entry = (Document) collection.find(Filters.eq("imageId", imageId)).first();
+        try {
+            org.json.simple.JSONObject json = (JSONObject) new JSONParser().parse(entry.toJson());
+            org.json.simple.JSONArray array = (JSONArray) json.get("shareUsers");
+            Iterator itr = array.iterator();
+            while (itr.hasNext()){
+                if(userId.equals(itr.next())){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     static boolean RemoveImage(String imageId, String userId){
